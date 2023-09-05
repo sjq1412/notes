@@ -15,6 +15,15 @@ const App = () => {
   const [notification, setNotification] = useState({message: null, variant: null})
 
   useEffect(() => {
+    const loggedUser = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, [])
+
+  useEffect(() => {
     if (notification.message) {
       setTimeout(() => {
         setNotification({message: null, variant: null})
@@ -74,6 +83,7 @@ const App = () => {
         const user = await loginService.login({username, password})
         setUser(user)
         noteService.setToken(user.token)
+        window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
         setUsername('')
         setPassword('')
       } catch (exception) {
@@ -102,7 +112,10 @@ const App = () => {
       <h2>Login</h2>
       {!user && loginForm()}
       {user && <div>
-          <p>{user.name} logged in</p>
+          <p>{user.name} logged in <button onClick={() =>{ 
+              window.localStorage.removeItem('loggedNoteappUser')
+              setUser(null)
+            }}>logout</button></p>
           {noteForm()}
         </div>}
       <div>
