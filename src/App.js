@@ -6,6 +6,8 @@ const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("a new note...");
   const [showAll, setShowAll] = useState(true);
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => setNotes(initialNotes));
@@ -49,9 +51,26 @@ const App = () => {
     ? notes
     : notes.filter((note) => note.important);
 
+    const handleLogin = (event) => {
+      event.preventDefault()
+      setUsername('')
+      setPassword('')
+      console.log({username, password})
+    }
+
+  const loginForm = <form onSubmit={handleLogin}>
+    <div>
+      <div>username <input type="text" name="username" value={username} onChange={({target}) => setUsername(target.value)} /></div>
+      <div>password <input type="text" name="password" value={password} onChange={({target}) => setPassword(target.value)} /></div>
+    </div>
+    <button type="submit">login</button>
+  </form>
+
   return (
     <div>
       <h1>Notes</h1>
+      <h2>Login</h2>
+      {loginForm}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           {showAll ? "important" : "all"}
