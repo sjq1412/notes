@@ -73,6 +73,7 @@ const App = () => {
       try {
         const user = await loginService.login({username, password})
         setUser(user)
+        noteService.setToken(user.token)
         setUsername('')
         setPassword('')
       } catch (exception) {
