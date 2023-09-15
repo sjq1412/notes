@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Note from "./components/Note";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
@@ -13,6 +13,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({message: null, variant: null})
+  const noteFormRef = useRef()
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedNoteappUser')
@@ -38,7 +39,8 @@ const App = () => {
   const addNote = async (noteObject) => {
     try {
       const returnedNote = await noteService.create(noteObject)
-    setNotes(notes.concat(returnedNote));
+      setNotes(notes.concat(returnedNote));
+      noteFormRef.current.toggleVisibility()
     } catch (exception) {
       console.error({exception})
       setNotification({ message: exception.response.data.error, variant: 'error'})
@@ -87,7 +89,7 @@ const App = () => {
 
   const noteForm = () => {
     return (
-      <Togglable buttonLabel="new note">
+      <Togglable buttonLabel="new note" ref={noteFormRef}>
         <NoteForm createNote={addNote} />
       </Togglable>
     )
