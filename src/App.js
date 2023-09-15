@@ -11,8 +11,6 @@ import "./index.css"
 const App = () => {
   const [notes, setNotes] = useState([]); 
   const [showAll, setShowAll] = useState(true);
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({message: null, variant: null})
 
@@ -67,16 +65,12 @@ const App = () => {
     ? notes
     : notes.filter((note) => note.important);
 
-    const handleLogin = async (event) => {
-      event.preventDefault()
-
+    const handleLogin = async (credentials) => {
       try {
-        const user = await loginService.login({username, password})
+        const user = await loginService.login(credentials)
         setUser(user)
         noteService.setToken(user.token)
         window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
-        setUsername('')
-        setPassword('')
       } catch (exception) {
         console.error({exception})
         setNotification({message: 'Wrong credentials', variant: "error"})
@@ -86,7 +80,7 @@ const App = () => {
   const loginForm = () => {
     return (
         <Togglable buttonLabel="login">
-          <LoginForm handleLogin={handleLogin} username={username} password={password} setUsername={setUsername} setPassword={setPassword} /> 
+          <LoginForm login={handleLogin} /> 
         </Togglable>
     )
   }
