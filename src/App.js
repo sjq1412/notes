@@ -9,8 +9,7 @@ import loginService from "./services/login"
 import "./index.css"
 
 const App = () => {
-  const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("a new note...");
+  const [notes, setNotes] = useState([]); 
   const [showAll, setShowAll] = useState(true);
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -38,25 +37,14 @@ const App = () => {
     noteService.getAll().then((initialNotes) => setNotes(initialNotes));
   }, []);
 
-  const addNote = async (event) => {
-    event.preventDefault();
-
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-    };
-
+  const addNote = async (noteObject) => {
     try {
       const returnedNote = await noteService.create(noteObject)
     setNotes(notes.concat(returnedNote));
-    setNewNote(""); 
     } catch (exception) {
       console.error({exception})
+      setNotification({ message: exception.response.data.error, variant: 'error'})
     }
-  };
-
-  const handleChangeInput = (event) => {
-    setNewNote(event.target.value);
   };
 
   const toggleNoteImportance = (id) => {
@@ -106,7 +94,7 @@ const App = () => {
   const noteForm = () => {
     return (
       <Togglable buttonLabel="new note">
-        <NoteForm addNote={addNote} newNote={newNote} handleChangeInput={handleChangeInput} />
+        <NoteForm createNote={addNote} />
       </Togglable>
     )
   }
