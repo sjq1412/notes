@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Note from "./components/Note";
 import Notification from "./components/Notification";
+import LoginForm from "./components/LoginForm";
 import noteService from "./services/notes";
 import loginService from "./services/login"
 import "./index.css"
@@ -13,6 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({message: null, variant: null})
+  const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedNoteappUser')
@@ -92,13 +94,20 @@ const App = () => {
       }
     }
 
-  const loginForm = () => <form onSubmit={handleLogin}>
-    <div>
-      <div>username <input type="text" name="username" value={username} onChange={({target}) => setUsername(target.value)} /></div>
-      <div>password <input type="text" name="password" value={password} onChange={({target}) => setPassword(target.value)} /></div>
-    </div>
-    <button type="submit">login</button>
-  </form>
+  const loginForm = () => {
+    const hideWhenVisible = {display: loginVisible ? 'none' : ''}
+    const showWhenVisible = {display: loginVisible ? '' : 'none'}
+
+    return (
+      <div>
+        <button style={hideWhenVisible} onClick={() => setLoginVisible(true)} >login</button>
+        <div style={showWhenVisible}>
+          <LoginForm handleLogin={handleLogin} username={username} password={password} setUsername={setUsername} setPassword={setPassword} />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
 
   const noteForm = () => <form onSubmit={addNote}>
   <input value={newNote} onChange={handleChangeInput} />
