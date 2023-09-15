@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 const Notification = ({ message, variant }) => {
   if (!message) {
-    return null;
+    return null
   }
 
-  return <div className={`notification ${variant}`}>{message}</div>;
-};
+  return <div className={`notification ${variant}`}>{message}</div>
+}
 
-export default Notification;
+export default Notification
