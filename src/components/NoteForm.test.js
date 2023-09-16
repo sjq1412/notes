@@ -10,7 +10,7 @@ describe('NoteForm component', () => {
 
     render(<NoteForm createNote={createNote} />)
 
-    const input = screen.getByRole('textbox')
+    const input = screen.getByPlaceholderText('a new note...')
     const sendButton = screen.getByText('save')
 
     await user.clear(input)
