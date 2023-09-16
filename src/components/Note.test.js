@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Note from './Note'
 
 describe('Note component', () => {
@@ -8,6 +8,8 @@ describe('Note component', () => {
     const { container } = render(<Note note={note} />)
 
     const div = container.querySelector('.note')
+
+    screen.debug(div)
     expect(div).toHaveTextContent('this is a note')
   })
 })
