@@ -15,8 +15,10 @@ describe('Note app', function () {
     cy.contains('Note app, Department of Computer Science, University of Helsinki 2023')
   })
 
-  it('the login form can be opened', function () {
+  it.only('the login form can be opened', function () {
     cy.contains('log in').click()
+    // eslint-disable-next-line no-debugger
+    debugger //debugging cypress
   })
 
   it('user can login', function () {
@@ -66,7 +68,7 @@ describe('Note app', function () {
         cy.createNote({ content: 'third note', important: false })
       })
 
-      it.only('one of those can be made importantt', function () {
+      it('one of those can be made importantt', function () {
         cy.contains('second note').parent().find('button').as('theButton')
         cy.get('@theButton').click()
         cy.get('@theButton').should('contain', 'make not important')
