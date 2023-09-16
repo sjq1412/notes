@@ -122,6 +122,7 @@ const App = () => {
           />
         ))}
       </ul>
+      <footer>Note app, Department of Computer Science, University of Helsinki 2023</footer>
     </div>
   )
 }
